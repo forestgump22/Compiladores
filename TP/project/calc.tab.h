@@ -74,9 +74,10 @@ union YYSTYPE
 
     double num;
     char* str;
+    char ch;
     int val;
 
-#line 80 "calc.tab.h"
+#line 81 "calc.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
