@@ -4,70 +4,7 @@
     #include <string.h>
     #include <ctype.h>    
     #include <math.h>
-    #include <assert.h>
-    //int FUN = 1;
-    // desde aqui
-    typedef double(func_t) (double);
-    struct symrec{
-        char *name;
-        int type;
-        union{
-            double var;
-            func_t *fun;
-        }value;
-        struct symrec *next;
-    };
-
-    typedef struct symrec symrec;
-
-    extern symrec *sym_table;
-
-    symrec *putsym (char const *name, int sym_type);
-    symrec *getsym (char const *name);
-
-    struct init{
-        char const *name;
-        func_t *fun;
-    };
-
-    struct init const funs[]={
-        { "atan", atan },
-        { "cos",  cos  },
-        { "exp",  exp  },
-        { "ln",   log  },
-        { "sin",  sin  },
-        { "sqrt", sqrt },
-        { 0 , 0 },
-    };
-
-    symrec *sym_table;
-    
-    static void init_table(void){
-        for (int i = 0; funs[i].name; i++){
-            symrec *ptr = putsym (funs[i].name, 1);
-            ptr->value.fun = funs[i].fun;
-        }
-    }
-    symrec* putsym (char const *name, int sym_type){
-        symrec *res = (symrec *) malloc (sizeof (symrec));
-        res->name = strdup(name);
-        res->type = sym_type;
-        res->value.var = 0;
-        res->next = sym_table;
-        sym_table = res;
-        return res;
-    }
-
-    symrec* getsym (char const *name){
-        for (symrec *p = sym_table; p; p = p->next){
-            if (strcmp(p->name, name) == 0){
-                return p;
-            }
-        }
-        return NULL;
-    }
-    // hasta aqui
-
+    init_table();
     extern int yylineno;
     int yylex(void);
     void yyerror(char const* s){
@@ -77,11 +14,12 @@
         printf("ANS: %s\n", s);
     }
 %}
+
 %union {
     double num;
     char* str;
     char ch;
-    symrec* smp;
+    struct symrec* smp;
     int val;
 }
 
@@ -128,9 +66,7 @@ exp:
     | '(' exp '/' exp ')'       { $$ = $2 / $4; }
     | '-' exp                   { $$ = -$2; }
     | '(' exp '>' exp ')'       { 
-        if($2 > $4) { $$ = 1; }
-        else if ($2 == $4) { $$ = 0; }
-        else { $$ = -1; }
+        return $2 > $4;
     }
     ;
 
@@ -147,5 +83,7 @@ texto:
 %%
 
 int main(void){
+    symrec* rect;
+    init_table();
     return yyparse();
 }
