@@ -1,0 +1,28 @@
+//primer ejemplo del lenguaje
+entero i 📥 5;
+flotante num 📥 5.0;
+mientras (num📏 50))🔌⛓ //num < 50 
+   num +📥 5.0;
+⛓
+print(i);
+print(num);
+entero i2;
+si (i📏num) 🔌⛓ 
+    print(i);
+    print(" < ");
+    print(num);
+    print("\n");
+⛓ 
+loop (i2 📥 0; i2📏5; i2 +📥 1)🔌⛓ // i2 < 5
+    num2 +📥 i2;
+⛓
+
+
+
+//segundo ejemplo del lenguaje
+
+entero edadMaria 📥 15;
+entero edadPedro 📥 30;
+si (18  📏 edadMaria)🔌⛓ 
+    print("es menor");
+⛓ 

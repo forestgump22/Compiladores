@@ -1,0 +1,14 @@
+
+3. Esbozo de la gramática de su lenguaje.
+<programa> -> <declaraciones> <sentencias>
+
+<declaraciones> -> <tipo> <identificador> 📥 <valor> ";" <declaraciones> | ε
+
+<sentencias> -> <sentencia> ";" <sentencias> | ε
+<sentencia> -> <asignacion> | <mientras> | <si> | <loop> | <imprimir>
+
+<loop> -> "loop" "(" <asignacion> ";" <condicion> ";" <asignacion> ")" <bloque>
+
+<mientras> -> "mientras" "(" <condicion> ")" <bloque>
+
+<si> -> "si" "(" <condicion> ")" <bloque>
