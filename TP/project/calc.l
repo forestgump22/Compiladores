@@ -7,7 +7,7 @@
 
 NUM         [-+]?([0-9]+\.[0-9]+|([0-9]+\.)|(\.[0-9]+)|([0-9]+))([Ee][+\-]?[0-9]+)?
 CADENA      \"([^\"]*)\"
-CARACTER    \'[a-zA-Z]\'
+CARACTER    \'[^\']\'
 MAYOR       📏 
 VERDADERO "true"
 FALSO "false"

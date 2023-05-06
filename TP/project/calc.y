@@ -1,9 +1,12 @@
 %{
     #include <stdio.h>
     #include <stdlib.h>
-    #include <string.h>    
-    #include <math.h> 
-
+    #include <string.h>
+    #include <ctype.h>    
+    #include <math.h>
+    #include <assert.h>
+    //int FUN = 1;
+    // desde aqui
     typedef double(func_t) (double);
     struct symrec{
         char *name;
@@ -15,7 +18,55 @@
         struct symrec *next;
     };
 
-    typedef struct symrec
+    typedef struct symrec symrec;
+
+    extern symrec *sym_table;
+
+    symrec *putsym (char const *name, int sym_type);
+    symrec *getsym (char const *name);
+
+    struct init{
+        char const *name;
+        func_t *fun;
+    };
+
+    struct init const funs[]={
+        { "atan", atan },
+        { "cos",  cos  },
+        { "exp",  exp  },
+        { "ln",   log  },
+        { "sin",  sin  },
+        { "sqrt", sqrt },
+        { 0 , 0 },
+    };
+
+    symrec *sym_table;
+    
+    static void init_table(void){
+        for (int i = 0; funs[i].name; i++){
+            symrec *ptr = putsym (funs[i].name, 1);
+            ptr->value.fun = funs[i].fun;
+        }
+    }
+    symrec* putsym (char const *name, int sym_type){
+        symrec *res = (symrec *) malloc (sizeof (symrec));
+        res->name = strdup(name);
+        res->type = sym_type;
+        res->value.var = 0;
+        res->next = sym_table;
+        sym_table = res;
+        return res;
+    }
+
+    symrec* getsym (char const *name){
+        for (symrec *p = sym_table; p; p = p->next){
+            if (strcmp(p->name, name) == 0){
+                return p;
+            }
+        }
+        return NULL;
+    }
+    // hasta aqui
 
     extern int yylineno;
     int yylex(void);
@@ -30,11 +81,14 @@
     double num;
     char* str;
     char ch;
+    symrec* smp;
     int val;
 }
 
 %token <val> VERDADERO
 %token <val> FALSO
+%token <smp> VAR
+%token <smp> FUN
 
 %token <str> CADENA
 %token <str> CHARACTER
@@ -62,7 +116,10 @@ line:
     ;
 
 exp:
-    NUM                         { $$ = $1; }
+    NUM
+    | VAR                       { $$ = $1->value.var; }
+    | VAR '=' exp               { $$ = $3; $1->value.var = $3; }
+    | FUN '(' exp ')'           { $$ = $1->value.fun ($3); }
     | VERDADERO                 { $$ = 1; }
     | FALSO                     { $$ = 0; } 
     | '(' exp '+' exp ')'       { $$ = $2 + $4; }

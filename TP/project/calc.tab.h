@@ -56,12 +56,14 @@ extern int yydebug;
     YYUNDEF = 257,                 /* "invalid token"  */
     VERDADERO = 258,               /* VERDADERO  */
     FALSO = 259,                   /* FALSO  */
-    CADENA = 260,                  /* CADENA  */
-    CHARACTER = 261,               /* CHARACTER  */
-    LITERAL_FLOAT = 262,           /* LITERAL_FLOAT  */
-    LITERAL_INT = 263,             /* LITERAL_INT  */
-    NUM = 264,                     /* NUM  */
-    EOL = 265                      /* EOL  */
+    VAR = 260,                     /* VAR  */
+    FUN = 261,                     /* FUN  */
+    CADENA = 262,                  /* CADENA  */
+    CHARACTER = 263,               /* CHARACTER  */
+    LITERAL_FLOAT = 264,           /* LITERAL_FLOAT  */
+    LITERAL_INT = 265,             /* LITERAL_INT  */
+    NUM = 266,                     /* NUM  */
+    EOL = 267                      /* EOL  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -70,14 +72,15 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 17 "calc.y"
+#line 80 "calc.y"
 
     double num;
     char* str;
     char ch;
+    symrec* smp;
     int val;
 
-#line 81 "calc.tab.h"
+#line 84 "calc.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
