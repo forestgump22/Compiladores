@@ -1,0 +1,68 @@
+%{
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <string.h>    
+    #include <math.h> 
+
+
+    extern int yylineno;
+    int yylex(void);
+    void yyerror(char const* s){
+        fprintf(stderr, "%s\n", s);
+    }
+%}
+%union {
+    double num;
+    char* str;
+    int val;
+}
+
+%token VERDADERO
+%token FALSO
+
+%token <str> CADENA
+%token <str> CHARACTER
+%token <num> LITERAL_FLOAT
+%token <val> LITERAL_INT
+
+%token <num> NUM
+%nterm <num> exp
+// %nterm <val> expbool
+%nterm <str> texto
+%nterm <str> line
+%nonassoc EOL
+
+%%
+input:
+    %empty
+    | input line
+    ;
+
+line:
+    '\n'            { $$ = "\0"; };
+    | exp  EOL      { printf("(%3d) ANS: %.10g\n", yylineno, $1); };
+    | texto EOL   { printf("(%3d) ANS: %s\n", yylineno, $1); };
+    ;
+
+exp:
+    NUM                   { $$ = $1; }
+    | '(' exp '+' exp ')' { $$ = $2 + $4; }
+    | '(' exp '-' exp ')' { $$ = $2 - $4; }
+    | '(' exp '*' exp ')' { $$ = $2 * $4; }
+    | '(' exp '/' exp ')' { $$ = $2 / $4; }
+    | '-' exp             { $$ = -$2; }
+    ;
+// expbool:
+//     | VERDADERO             { $$ = 1; }
+//     | FALSO               { $$ = 0; }  
+//     ;
+texto:   
+    | CADENA                      { $$ = $1; }
+    | '(' texto '+' texto ')'     { $$ = malloc(strlen($2) + strlen($4) + 1); strcpy($$, $2); strcat($$, $4); }
+    ;
+
+%%
+
+int main(void){
+    return yyparse();
+}

@@ -54,21 +54,32 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    LETTERS = 258,                 /* LETTERS  */
-    VERDADERO = 259,               /* VERDADERO  */
-    FALSO = 260,                   /* FALSO  */
-    CADENA = 261,                  /* CADENA  */
-    CHARACTER = 262,               /* CHARACTER  */
-    LITERAL_FLOAT = 263,           /* LITERAL_FLOAT  */
-    LITERAL_INT = 264,             /* LITERAL_INT  */
-    NUM = 265                      /* NUM  */
+    VERDADERO = 258,               /* VERDADERO  */
+    FALSO = 259,                   /* FALSO  */
+    CADENA = 260,                  /* CADENA  */
+    CHARACTER = 261,               /* CHARACTER  */
+    LITERAL_FLOAT = 262,           /* LITERAL_FLOAT  */
+    LITERAL_INT = 263,             /* LITERAL_INT  */
+    NUM = 264,                     /* NUM  */
+    EOL = 265                      /* EOL  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef double YYSTYPE;
+union YYSTYPE
+{
+#line 17 "calc.y"
+
+    double num;
+    char* str;
+    int val;
+
+#line 80 "calc.tab.h"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif

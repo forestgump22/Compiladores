@@ -15,6 +15,7 @@
 %token FLOTANTE
 %token ENTERO
 %nterm exp
+%nterm texto
 
 %%
 input:
@@ -38,6 +39,7 @@ exp:
     /* | exp exp '^' { $$ = pow($1, $2); } */
     | exp 'n'     { $$ = -$1; }
     ;
+    
 %%
 
 int main(void){
