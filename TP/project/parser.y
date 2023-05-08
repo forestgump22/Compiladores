@@ -55,7 +55,7 @@ input:
 line:
         '\n'
     | exp     '\n'   { printf("(%3d) ANS: %.10g\n", $1); };
-    | PRINT '(' exp ')' { printf("%d\n", $3); }
+    | PRINT '(' exp ')' { printf("%d\n", $1); }
     | error { printf("Error\n"); }
     | IF '(' condition ')' '{' line '}' {
         if ($3) {
@@ -75,12 +75,29 @@ condition:
     INTEGER LT INTEGER {
         $$ = ($1 < $3);
         printf("VALOR BOOL: %d\n", $$);
-    }
-    | INTEGER '>' INTEGER{
-        $$ = ($1 < $3);
+    }|
+    INTEGER GT INTEGER {
+        $$ = ($1 > $3);
+
         printf("VALOR BOOL: %d\n", $$);
-    }
+    }|
+    INTEGER LTE INTEGER {
+        $$ = ($1 <= $3);
+
+        printf("VALOR BOOL: %d\n", $$);
+    }|
+    INTEGER GTE INTEGER {
+        $$ = ($1 >= $3);
+
+        printf("VALOR BOOL: %d\n", $$);
+    }|
+    INTEGER EQUAL INTEGER {
+        $$ = ($1 == $3);
+
+        printf("VALOR BOOL: %d\n", $$);
+    }|
     ;
+
     
 /////////////////
 
