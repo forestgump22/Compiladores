@@ -3,7 +3,7 @@
     #include <stdlib.h>
     #include <string.h>
     #include <ctype.h>    
-    #include <math.h>
+    #include <math.h> 
     init_table();
     extern int yylineno;
     int yylex(void);
@@ -29,17 +29,23 @@
 %token <smp> FUN
 
 %token <str> CADENA
-%token <str> CHARACTER
+%token <ch> CHARACTER
 %token <num> LITERAL_FLOAT
 %token <val> LITERAL_INT
 
 %token <num> NUM
+
 %nterm <num> exp
 // %nterm <val> expbool
 %nterm <str> texto
 %nterm line
 // %nterm condicional
 %nonassoc EOL
+
+%left '-' '+'
+%left '*' '/'
+%precedence NEG   /* negation--unary minus */
+%right '^'        /* exponentiation */
 
 %%
 input:
@@ -71,6 +77,7 @@ exp:
     ;
 
 // expbool:
+// ((5+60) - (60 + 100) + (((()+())))+()+()-()*()) = 
 //     VERDADERO          { $$ = 1; }
 //     | FALSO            { $$ = 0; }  
 //     ;

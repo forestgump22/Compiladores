@@ -69,9 +69,11 @@ line:
             return_function($10);
         }
     }
+    ;
 
 ////////////////////////////
 condition:
+    NUM
     INTEGER LT INTEGER {
         $$ = ($1 < $3);
         printf("VALOR BOOL: %d\n", $$);
